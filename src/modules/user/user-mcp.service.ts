@@ -11,7 +11,11 @@ export class UserMCPService implements OnModuleInit {
 
   onModuleInit() {
     for (const tool of UserMCPTools) {
-      this.mcpService.addTool(tool.name, tool.getTool(this.userService));
+      this.mcpService.addTool(
+        tool.name,
+        tool.getTool(this.userService),
+        tool.validator,
+      );
     }
   }
 }

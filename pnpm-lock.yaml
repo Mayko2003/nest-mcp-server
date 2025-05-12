@@ -56,6 +56,9 @@ importers:
       typeorm:
         specifier: ^0.3.23
         version: 0.3.23(mysql2@3.14.1)(reflect-metadata@0.2.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.11.24)(@types/node@22.15.17)(typescript@5.8.3))
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.2.0

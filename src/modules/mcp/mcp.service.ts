@@ -27,8 +27,8 @@ export class MCPService implements OnModuleInit {
     this.logger.log('MCP Server initialized!');
   }
 
-  addTool(name: string, cb: ToolCallback) {
-    this.MCPServer?.tool(name, cb);
+  addTool(name: string, cb: ToolCallback, validator?: any) {
+    this.MCPServer?.tool(name, validator || null, cb);
   }
 
   getServer() {
