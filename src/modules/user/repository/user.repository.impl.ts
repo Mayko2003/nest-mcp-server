@@ -70,21 +70,18 @@ export class UserRepository implements UserRepositoryInterface {
     id: string,
     updateUserDto: UpdateUserDto,
   ): Promise<UserEntityDB> {
-    const exist = await this.checkIfUserExistById(id);
-    if (!exist) throw new NotFoundException('User not found');
-    const user = this.userRepository.create({
-      id,
-      ...updateUserDto,
+    const user = await this.userRepository.findOne({
+      where: { id, status: UserStatus.ACTIVE },
     });
-    return this.userRepository.save(user);
+    if (!user) throw new NotFoundException('User not found');
+    return this.userRepository.save({ ...user, ...updateUserDto });
   }
   async delete(id: string): Promise<UserEntityDB> {
-    const exist = await this.checkIfUserExistById(id);
-    if (!exist) throw new NotFoundException('User not found');
-    const user = this.userRepository.create({
-      id,
-      status: UserStatus.INACTIVE,
+    const user = await this.userRepository.findOne({
+      where: { id, status: UserStatus.ACTIVE },
     });
+    if (!user) throw new NotFoundException('User not found');
+    user.status = UserStatus.INACTIVE;
     return this.userRepository.save(user);
   }
 }
