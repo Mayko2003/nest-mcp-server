@@ -28,7 +28,11 @@ export class MCPService implements OnModuleInit {
   }
 
   addTool(name: string, cb: ToolCallback, validator?: any) {
-    this.MCPServer?.tool(name, validator || null, cb);
+    if (validator) {
+      this.MCPServer?.tool(name, validator, cb);
+    } else {
+      this.MCPServer?.tool(name, cb);
+    }
   }
 
   getServer() {
