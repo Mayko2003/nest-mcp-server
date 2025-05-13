@@ -49,6 +49,7 @@ export class UserService {
   }
 
   async findOne(id: string) {
+    if (!id) throw new BadRequestException('Id is required');
     const user = await this.userRepository.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -74,7 +75,8 @@ export class UserService {
     return this.userRepository.update(id, updateUserDto);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    if (!id) throw new BadRequestException('Id is required');
     return this.userRepository.delete(id);
   }
 }
