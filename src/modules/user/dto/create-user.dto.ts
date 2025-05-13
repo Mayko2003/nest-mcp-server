@@ -6,6 +6,7 @@ import {
   IsStrongPassword,
 } from 'class-validator';
 import { ValidationMessages } from 'src/shared/validation/validation.messages';
+
 export class CreateUserDto {
   @ApiProperty({
     description: 'The username of the user',
