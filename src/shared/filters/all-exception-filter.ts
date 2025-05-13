@@ -3,6 +3,7 @@ import {
   BadRequestException,
   ExceptionFilter,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { Catch } from '@nestjs/common';
 import { Request, Response } from 'express';
@@ -29,6 +30,18 @@ export class AllExceptionFilter implements ExceptionFilter {
         statusCode: number;
       };
       error = errorData.message || exception.message;
+    } else if (exception instanceof NotFoundException) {
+      statusCode = exception.getStatus();
+      message = 'Not Found';
+      error = exception.message;
+    } else if (exception instanceof Error) {
+      statusCode = 500;
+      message = 'Internal Server Error';
+      error = exception.message;
+    } else {
+      statusCode = 500;
+      message = 'Internal Server Error';
+      error = 'Internal Server Error';
     }
 
     const res: HttpResponseError = {
