@@ -2,7 +2,13 @@
 import { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp';
 import { UserService } from '../user.service';
 import { MCPTool } from 'src/shared/interface/mcp-tool.interface';
-import { createUserToolSchema } from './schemas.tools';
+import {
+  checkIdSchema,
+  createUserToolSchema,
+  updateUserToolSchema,
+} from './schemas.tools';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 export const UserMCPTools: MCPTool[] = [
   {
@@ -27,7 +33,8 @@ export const UserMCPTools: MCPTool[] = [
     validator: createUserToolSchema,
     getTool: (userService: UserService) => {
       const fn = async (params: any) => {
-        const { email, username, password, firstName, lastName } = params;
+        const { email, username, password, firstName, lastName } =
+          params as CreateUserDto;
         const user = await userService.create({
           email,
           username,
@@ -49,13 +56,14 @@ export const UserMCPTools: MCPTool[] = [
   },
   {
     name: 'updateUserTool',
+    validator: updateUserToolSchema,
     getTool: (userService: UserService) => {
       const fn = async (params: any) => {
-        const { id, email, username, password, firstName, lastName } = params;
+        const { id, email, username, firstName, lastName } =
+          params as UpdateUserDto & { id: string };
         const user = await userService.update(id, {
           email,
           username,
-          password,
           firstName,
           lastName,
         });
@@ -73,9 +81,10 @@ export const UserMCPTools: MCPTool[] = [
   },
   {
     name: 'deleteUserTool',
+    validator: checkIdSchema,
     getTool: (userService: UserService) => {
       const fn = async (params: any) => {
-        const { id } = params;
+        const { id } = params as { id: string };
         const user = await userService.remove(id);
         return {
           content: [
@@ -91,9 +100,10 @@ export const UserMCPTools: MCPTool[] = [
   },
   {
     name: 'getUserTool',
+    validator: checkIdSchema,
     getTool: (userService: UserService) => {
       const fn = async (params: any) => {
-        const { id } = params;
+        const { id } = params as { id: string };
         const user = await userService.findOne(id);
         return {
           content: [
