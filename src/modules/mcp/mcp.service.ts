@@ -1,10 +1,12 @@
 import { McpServer, ToolCallback } from '@modelcontextprotocol/sdk/server/mcp';
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
 export class MCPService implements OnModuleInit {
   private MCPServer: McpServer;
   private logger = new Logger('MCP SERVER');
+  private sseTransport: { [key: string]: SSEServerTransport } = {};
 
   onModuleInit() {
     this.MCPServer = new McpServer({
@@ -37,5 +39,17 @@ export class MCPService implements OnModuleInit {
 
   getServer() {
     return this.MCPServer;
+  }
+
+  addSSETransport(id: string, transport: SSEServerTransport) {
+    this.sseTransport[id] = transport;
+  }
+
+  getSSETransport(id: string) {
+    return this.sseTransport[id];
+  }
+
+  removeSSETransport(id: string) {
+    delete this.sseTransport[id];
   }
 }
