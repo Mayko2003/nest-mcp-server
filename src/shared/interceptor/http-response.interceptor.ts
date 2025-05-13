@@ -12,7 +12,6 @@ export class ResponseBodyInterceptor implements NestInterceptor {
     if (request.url.includes('/mcp')) {
       return handler.handle();
     }
-    console.log('interceptor', request.body);
     return handler.handle().pipe(
       map(
         (data) =>
